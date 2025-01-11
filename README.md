@@ -1,1 +1,1 @@
-ansible-playbook playbook.yaml -e "state=up hosts=IMC_1rack:IMC_2rack" -i inventory
+ansible-playbook playbook.yaml -e "state=up server_rack=IMC_rack1:IMC_rack2" -i inventory
