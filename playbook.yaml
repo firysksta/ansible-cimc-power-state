@@ -1,0 +1,37 @@
+- name: Manage Cisco IMC Servers
+  hosts: IMC
+  connection: local
+  gather_facts: false
+
+  vars:
+    imc_username: "admin"          # Укажите имя пользователя
+    imc_password: "P@ssw0rd"       # Укажите пароль
+    validate_certs: false          # Если нет доверительных отношений с СIMC
+
+  tasks:
+    - name: Set server power state
+      community.general.imc_rest:
+        hostname: '{{ ansible_host }}'   # Используем ansible_host, который определён в инвентаре
+        username: '{{ imc_username }}'
+        password: '{{ imc_password }}'
+        validate_certs: '{{ validate_certs }}'
+        content: |
+          <configConfMo><inConfig>
+            <computeRackUnit dn="sys/rack-unit-1" adminPower="{{ power_state }}"/>
+          </inConfig></configConfMo>
+      delegate_to: localhost
+      vars:
+        power_state: >-
+          {%- if state == 'up' -%}
+            up
+          {%- elif state == 'down' -%}
+            soft-shut-down
+          {%- elif state == 'reboot' -%}
+            cycle-immediate
+          {%- elif state == 'hard-off' -%}
+            down
+          {%- elif state == 'hard-reboot' -%}
+            hard-reset-immediate
+          {%- else -%}
+            null
+          {%- endif -%}
