@@ -1,5 +1,5 @@
 - name: Manage Cisco IMC Servers
-  hosts: '{{ Hosts }}'
+  hosts: '{{ hosts }}'
   connection: local
   gather_facts: false
 
