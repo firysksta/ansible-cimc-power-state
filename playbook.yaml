@@ -1,5 +1,5 @@
 - name: Manage Cisco IMC Servers
-  hosts: '{{ hosts }}'
+  hosts: '{{ server_rack }}'       # Указание серверной стойки (через extra-vars)
   connection: local
   gather_facts: false
 
